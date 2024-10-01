@@ -41,20 +41,13 @@ jobs:
         path: output.txt
 
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: ncipollo/release-action@v1.14.0
       with:
-        tag_name: v1.0.${{ github.run_number }}
-        release_name: Simulation Results
         body: |
-          ![Result Image](result.png)
           ```
           ${{ steps.run_simulation.outputs.output }}
           ```
-        draft: false
-        prerelease: false
+          ![Result Image](result.png)
 
     - name: Upload result.png to release
       uses: actions/upload-release-asset@v1
