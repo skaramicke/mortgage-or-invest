@@ -28,9 +28,8 @@ jobs:
     - name: Run simulation
       id: run_simulation
       run: |
-        OUTPUT=$(python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000 | tr '\n' ' ')
         echo "details=<<EOF" >> $GITHUB_OUTPUT
-        echo $OUTPUT >> $GITHUB_OUTPUT
+        python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000 >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Upload result.png
@@ -62,13 +61,3 @@ jobs:
         asset_path: result.png
         asset_name: result.png
         asset_content_type: image/png
-
-    - name: Upload output.txt to release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: output.txt
-        asset_name: output.txt
-        asset_content_type: text/plain
