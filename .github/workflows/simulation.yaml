@@ -28,8 +28,10 @@ jobs:
     - name: Run simulation
       id: run_simulation
       run: |
-        OUTPUT=$(python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000)
-        echo "::set-output name=output::$OUTPUT"
+        OUTPUT=$(python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000 | tr '\n' ' ')
+        echo "details=<<EOF" >> $GITHUB_OUTPUT
+        echo $OUTPUT >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Upload result.png
       uses: actions/upload-artifact@v4
@@ -37,19 +39,13 @@ jobs:
         name: result-image
         path: result.png
 
-    - name: Upload output.txt
-      uses: actions/upload-artifact@v4
-      with:
-        name: simulation-output
-        path: output.txt
-
     - name: Create Release
       uses: ncipollo/release-action@v1.14.0
       id: create_release
       with:
         body: |
           ```
-          ${{ steps.run_simulation.outputs.output }}
+          ${{ steps.run_simulation.outputs.details }}
           ```
           ![Result Image](https://github.com/skaramicke/mortgage-or-invest/releases/download/v1/result.png)
         name: Simulation Results
