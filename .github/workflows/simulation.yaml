@@ -28,8 +28,8 @@ jobs:
     - name: Run simulation
       id: run_simulation
       run: |
-        output = $(python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000)
-        echo "::set-output name=output::$output"
+        OUTPUT=$(python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000)
+        echo "::set-output name=output::$OUTPUT"
 
     - name: Upload result.png
       uses: actions/upload-artifact@v4
