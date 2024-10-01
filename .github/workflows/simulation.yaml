@@ -23,13 +23,20 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install matplotlib
+        pip install -r requirements.txt
 
     - name: Run simulation
       id: run_simulation
       run: |
-        echo "details=<<EOF" >> $GITHUB_OUTPUT
-        python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000 >> $GITHUB_OUTPUT
+        # Run the simulation and save output to a file
+        python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000 > simulation_output.txt
+        
+        # Read the simulation output into a variable
+        simulation_output=$(cat simulation_output.txt)
+
+        # Use multi-line syntax to set the output with EOF
+        echo "details<<EOF" >> $GITHUB_OUTPUT
+        echo "$simulation_output" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Upload result.png
