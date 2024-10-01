@@ -29,13 +29,13 @@ jobs:
         python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000 > output.txt
 
     - name: Upload result.png
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: result-image
         path: result.png
 
     - name: Upload output.txt
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: simulation-output
         path: output.txt
