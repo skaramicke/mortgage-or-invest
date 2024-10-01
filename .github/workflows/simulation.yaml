@@ -28,7 +28,8 @@ jobs:
     - name: Run simulation
       id: run_simulation
       run: |
-        python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000 > output.txt
+        output = $(python simulation.py --initial_loan 450000 --interest_rate 8.5 --minimum_amortization 2500 --investment_return 6 --years 15 --monthly_payment 6000)
+        echo "::set-output name=output::$output"
 
     - name: Upload result.png
       uses: actions/upload-artifact@v4
@@ -50,9 +51,11 @@ jobs:
           ```
           ${{ steps.run_simulation.outputs.output }}
           ```
-          ![Result Image](result.png)
+          ![Result Image](https://github.com/skaramicke/mortgage-or-invest/releases/download/v1/result.png)
         name: Simulation Results
         tag: v1
+        allowUpdates: true
+        artifactContentType: image/png
 
     - name: Upload result.png to release
       uses: actions/upload-release-asset@v1
